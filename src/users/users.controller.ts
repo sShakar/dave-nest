@@ -1,3 +1,4 @@
+import { UsersService } from './users.service';
 import {
   Body,
   Controller,
@@ -12,33 +13,38 @@ import { UserRoles } from 'src/enums';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
   // GET /users or /users?role=value
   @Get()
   findAll(@Query('role') role?: UserRoles) {
-    return [];
+    return this.usersService.findAll(role);
   }
 
   // GET /users/:id
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return { id };
+    return this.usersService.findOne(+id);
   }
 
   // POST /users
   @Post()
-  create(@Body() user: object) {
-    return user;
+  create(@Body() user: { name: string; email: string; role: UserRoles }) {
+    return this.usersService.create(user);
   }
 
   // PATCH /users/:id
   @Patch(':id')
-  update(@Param('id') id: string, @Body() userUpdate: object) {
-    return { id, ...userUpdate };
+  update(
+    @Param('id') id: string,
+    @Body() userUpdate: { name: string; email: string; role: UserRoles },
+  ) {
+    return this.usersService.update(+id, userUpdate);
   }
 
   // DELETE /users/:id
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return { id };
+    return this.usersService.delete(+id);
   }
 }
