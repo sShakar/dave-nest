@@ -8,12 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { UserRoles } from 'src/enums';
 
 @Controller('users')
 export class UsersController {
   // GET /users or /users?role=value
   @Get()
-  findAll(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+  findAll(@Query('role') role?: UserRoles) {
     return [];
   }
 
